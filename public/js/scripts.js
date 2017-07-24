@@ -1,35 +1,38 @@
 $( function() {
     'use strict';
     var isSending = false;
-    $("input[name='voice_text']").webkitSpeech = true;
-    if (document.createElement('input').webkitSpeech === undefined) {
-// Не поддерживается
-        console.log('+');
-    } else {
 
-// Поддерживается!
-        console.log('-');
+    init();
+
+    function init() {
+        initSearchResult();
     }
 
-    $('.main-form').on('submit', function (event) {
-        event.preventDefault();
+    function initSearchResult() {
+        var $translateForm = $('.main-form');
+        var $translateFormField = $translateForm.find("textarea[name='text_in']");
+        var $resultFormField = $translateForm.find("textarea[name='text_out']");
 
-        var $thisForm = $(this);
 
-        if(isSending) return;
+        $translateFormField.on("input", function () {
+            console.log(12);
+            $translateFormField.trigger('submit');
+        });
 
-        isSending = true;
 
-        $.ajax({
-            url: $thisForm.attr('action'),
-            method: $thisForm.attr('method'),
-            data: $thisForm.serialize()
-        }).done(function (data) {
-            $("textarea[name='text_out']").val(data);
-            isSending = false;
-        }).fail(function (err) {
-            //alert(err);
-            isSending = false;
-        })
-    })
+
+        $translateForm.on('submit', function() {
+            $.ajax({
+                url: $translateForm.attr('action'),
+                method: $translateForm.attr('method'),
+                data: $translateForm.serialize()
+            }).done( function(data) {
+                $resultFormField.val(data);
+            }).fail( function(er)  {
+                console.error();
+            });
+        });
+    }
+
+
 });
