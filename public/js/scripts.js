@@ -14,23 +14,29 @@ $( function() {
         var $resultFormField = $translateForm.find("textarea[name='text_out']");
 
 
-        $translateFormField.on("input", function () {
-            console.log(12);
-            $translateFormField.trigger('submit');
-        });
+        var isSend = false;
 
+        $translateFormField.on("input propertychange", function (event) {
 
+            if(isSend) return;
 
-        $translateForm.on('submit', function() {
+            isSend = true;
             $.ajax({
                 url: $translateForm.attr('action'),
                 method: $translateForm.attr('method'),
                 data: $translateForm.serialize()
             }).done( function(data) {
                 $resultFormField.val(data);
+                isSend = false;
             }).fail( function(er)  {
                 console.error();
+                isSend = false;
             });
+        });
+
+
+        $translateForm.on('submit', function() {
+
         });
     }
 

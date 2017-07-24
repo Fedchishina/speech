@@ -18,3 +18,7 @@ select.select-list{
 textarea {
     resize: none;
 }
+
+.btn-submit-block {
+    display: none;
+}

@@ -128,6 +128,7 @@
 
 			// append transcript to cached input value
 			inputEl.value = prefix + transcript;
+            inputEl.dispatchEvent(new Event('input'));
 
 			// set cursur and scroll to end
 			inputEl.focus();
